@@ -39,6 +39,7 @@ mkfs.ext4 -L spare $PART_SPAREFS
 mkdir -p /mnt/tmp-sdrootfs
 mount -t ext4 $PART_ROOTFS /mnt/tmp-sdrootfs
 tar --strip-components=1 -xf $ROOTFS -C /mnt/tmp-sdrootfs
+sync
 umount /mnt/tmp-sdrootfs
 rm -rf /mnt/tmp-sdrootfs
 
@@ -46,5 +47,6 @@ rm -rf /mnt/tmp-sdrootfs
 mkdir -p /mnt/tmp-sdrootfs
 mount -t vfat $PART_BOOTFS /mnt/tmp-sdrootfs
 tar --strip-components=1 -xzf $BOOTFS -C /mnt/tmp-sdrootfs
+sync
 umount /mnt/tmp-sdrootfs
 rm -rf /mnt/tmp-sdrootfs
