@@ -22,10 +22,10 @@ dd if=/dev/zero of=$MEDIA bs=512 count=1
 partprobe $MEDIA
 
 sfdisk -uM $MEDIA <<EOF
-1,192,0C
-200,400,83
-600,400,83
-1000,,83
+1,20,0C
+21,100,83
+121,100,83
+221,100,83
 EOF
 sleep 1
 partprobe $MEDIA
