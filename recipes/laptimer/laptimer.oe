@@ -1,0 +1,40 @@
+DESCRIPTON = "Laptimer app"
+
+RDEPENDS_${PN} += "qtbase"
+
+PV="5.3.1"
+inherit qt5module 
+
+SRC_URI += "git://github.com/jacobbarsoe/qt-laptimer.git;protocol=https;${SRC_REV}"
+
+#developer
+#SRC_URI += "git://${TOPDIR}/src/qt-laptimer;protocol=file"
+
+SRC_REV = "branch=master"
+#SRC_REV = "commit=6fdbcfe235f7d7642c182f93e13af2f38ef22e83"
+
+S = "${SRCDIR}/qt-laptimer"
+
+#init start part
+RECIPE_FLAGS = "laptimer_sysvinit_start"
+
+inherit sysvinit
+
+SYSVINIT_SCRIPT_laptimer = "laptimer.sh"
+DEFAULT_USE_laptimer 	 = "09"
+
+RDEPENDS_${PN} += "gpio-event-app"
+
+SRC_URI += "\
+	file://laptimer.sh \
+"
+
+do_install () {
+	install -d ${D}${sysconfdir}/init.d
+	install -d ${D}${bindir}
+	install -m 0755 ${SRCDIR}/laptimer.sh ${D}${sysconfdir}/init.d/
+	install -m 0755 ${S}/laptime ${D}${bindir}
+}
+
+
+
