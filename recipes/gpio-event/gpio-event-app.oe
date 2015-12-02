@@ -1,0 +1,25 @@
+DESCRIPTION = "gpio event driver support application from gumstix project"
+
+HOMEPAGE="http://svn.hylands.org/linux/gpio-event/app/"
+
+SRC_URI="""
+	http://svn.hylands.org/linux/gpio-event/app/Makefile 
+	http://svn.hylands.org/linux/gpio-event/app/gpio-event.c 
+	http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.h
+	"""	
+
+S = "${SRCDIR}"
+
+DEPENDS = "gpio-event-dev"
+RDEPENDS_${PN} = "gpio-event"
+
+inherit c make
+
+export CROSS_COMPILE="${CROSS}"
+
+do_install(){
+	mkdir -p ${D}${bindir}
+	chmod a+x ${S}/gpio-event
+	install -m 0644 ${S}/gpio-event ${D}${bindir}/.
+}
+
