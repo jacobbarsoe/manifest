@@ -1,0 +1,25 @@
+DESCRIPTION = "highly configurable gpio event driver from gumstix project, that also prints time stamps + edge"
+
+HOMEPAGE="http://svn.hylands.org/linux/gpio-event/"
+
+inherit kernel-modules
+
+SRC_URI=" \
+http://svn.hylands.org/linux/gpio-event/module/Makefile \
+http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.c \
+http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.h "
+
+S = "${SRCDIR}"
+
+do_compile(){
+	unset LDFLAGS
+	oe_runmake \
+		   ARCH=${KERNEL_ARCH}\
+		   KERNEL_PATH=${HOST_SYSROOT}${kernelsrcdir}
+}
+
+do_install(){
+	mkdir -p ${D}/lib/modules
+	install -m 0644 ${S}/*.ko ${D}/lib/modules/.
+}
+
