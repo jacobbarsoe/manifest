@@ -16,12 +16,11 @@ SRC_REV = "branch=master"
 S = "${SRCDIR}/qt-laptimer"
 
 #init start part
-RECIPE_FLAGS = "laptimer_sysvinit_start"
+RECIPE_FLAGS += "laptimer_sysvinit_start"
 
 inherit sysvinit
-
 SYSVINIT_SCRIPT_laptimer = "laptimer.sh"
-DEFAULT_USE_laptimer 	 = "09"
+DEFAULT_USE_laptimer_sysvinit_start = "09"
 
 RDEPENDS_${PN} += "gpio-event-app"
 
