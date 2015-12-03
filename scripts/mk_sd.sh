@@ -1,50 +1,98 @@
 #!/bin/bash 
-set -x -e
+set -e 
 
-# Call this script with something like:
-# ./meta/raspberrypi/scripts/mk_sd.sh /dev/mmcblk0 tmp/images/ 
+# Default files
+BOOTFS=rpi-sensor1-sensor-bootfs.tar.gz
+ROOTFS=rpi-rootfs.tar
+
+function showUsage {
+	echo ""
+	echo "Usage:"
+	echo "     $1 <sd device> [<bootfs-image> [<rootfs-image> [<appfs-image>]]]"
+	echo ""
+	echo "Default bootfs-image is $BOOTFS"
+	echo "Default rootfs-image is $ROOTFS"
+	echo "Default appfs-image is $APPFS"
+	echo ""
+}
+
+
+function do_info {
+	echo ""
+	echo "**********************************************"
+	echo "  $1"
+	echo "**********************************************"
+	echo ""
+}
+
+function do_exit {
+	echo "ERROR: $1"
+	exit 1
+}
+
+if [ $# -lt 1 -o $# -gt 4 ]; then
+	showUsage `basename $0`
+	exit 1
+fi
 
 MEDIA=$1
-PART_SPAREFS="$1"p4
-PART_ROOTFS_SPARE="$1"p3
-PART_ROOTFS="$1"p2
 PART_BOOTFS="$1"p1
-ROOTFS=$2/rpi-raspberrypi-rootfs.tar
-BOOTFS=$2/rpi-raspberrypi-bootfs.tar.gz
+PART_ROOTFS="$1"p2
+PART_ROOTFS2="$1"p3
+if [ $# -gt 1 ]; then
+	BOOTFS=$2
+fi
+if [ $# -gt 2 ]; then
+	ROOTFS=$3
+fi
+
+#set -o errexit
+[ -r $BOOTFS ] || do_exit "$BOOTFS not found"
+[ -n $MEDIA ] || do_exit "$MEDIA not found"
+[ -r $ROOTFS ] || do_exit "$ROOTFS not found"
+sudo test -w $MEDIA || do_exit "$MEDIA not writable"
+
 
 #######################
-ls -l $MEDIA
-sleep 5
+# Get access to media
+grep $MEDIA /proc/mounts | awk '{print $1}' | xargs -rn1 sudo umount
 
-umount /media/*  || :
+
+do_info "Creating partitions on $MEDIA"
 
 dd if=/dev/zero of=$MEDIA bs=512 count=1
-partprobe $MEDIA
+sudo sfdisk -R $MEDIA
 
-sfdisk -uM $MEDIA <<EOF
-1,192,0C
-200,400,83
-600,400,83
-1000,,83
+sudo sfdisk -uM $MEDIA <<EOF
+1,20,0C,*
+21,420,83
+441,420,83
 EOF
 sleep 1
-partprobe $MEDIA
+sudo sfdisk -R $MEDIA
+
+do_info "Creating filesystems"
 
 mkfs.vfat -n boot $PART_BOOTFS
 mkfs.ext4 -L rootfs $PART_ROOTFS
-mkfs.ext4 -L rootfs_spare $PART_ROOTFS_SPARE
-mkfs.ext4 -L spare $PART_SPAREFS
+mkfs.ext4 -L rootfs2 $PART_ROOTFS2
 
-[ -r $ROOTFS ]
-mkdir -p /mnt/tmp-sdrootfs
-mount -t ext4 $PART_ROOTFS /mnt/tmp-sdrootfs
-tar --strip-components=1 -xf $ROOTFS -C /mnt/tmp-sdrootfs
-umount /mnt/tmp-sdrootfs
-rm -rf /mnt/tmp-sdrootfs
+do_info "Installing rootfs"
+temp=`mktemp -d`
+sudo mount -t ext4 $PART_ROOTFS $temp
+sudo tar --strip-components=1 -xf $ROOTFS -C $temp
+sync
+sudo umount $temp
+sleep 2
 
-[ -r $BOOTFS ]
-mkdir -p /mnt/tmp-sdrootfs
-mount -t vfat $PART_BOOTFS /mnt/tmp-sdrootfs
-tar --strip-components=1 -xzf $BOOTFS -C /mnt/tmp-sdrootfs
-umount /mnt/tmp-sdrootfs
-rm -rf /mnt/tmp-sdrootfs
+do_info "Installing bootfs"
+sudo mount -t vfat $PART_BOOTFS $temp
+sudo tar --strip-components=1 -xzf $BOOTFS -C $temp
+sync
+sudo umount $temp
+sleep 2
+
+do_info "Cleaning up"
+rm -rf $temp
+
+do_info "SD card created"
