@@ -13,6 +13,7 @@ case "$1" in
     start)
         echo -n "starting $DESC: $NAME... "
 	insmod /lib/modules/gpio-event-drv.ko
+	sleep 2
 	gpio-event 17:R:100 18:R:100
 	start-stop-daemon -b -S -m -p $PIDFILE -a $DAEMON -- $ARGS
 	echo "done."
