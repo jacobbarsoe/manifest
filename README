@@ -18,7 +18,8 @@ wait a while for the building to complete.
 
 Assuming sd-card reader is /dev/sdb (WARNING: be sure, the script does
 not check if you got it wrong and disk will be erased!
-./scripts/mk_sd.sh /dev/sdb tmp/images
+
+sudo ./scripts/mk_sd.sh /dev/mmcblk0 tmp/images/rpi-raspberrypi-bootfs.tar.gz tmp/images/rpi-raspberrypi-rootfs.tar
 
 TODO:
 a recipe to setup config.txt to configure overclocking, hdmi, etc.
