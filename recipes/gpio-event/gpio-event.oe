@@ -7,7 +7,9 @@ inherit kernel-modules
 SRC_URI=" \
 http://svn.hylands.org/linux/gpio-event/module/Makefile \
 http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.c \
-http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.h "
+http://svn.hylands.org/linux/gpio-event/module/gpio-event-drv.h \
+file://proc_fixup.patch \
+file://linux_4.patch"
 
 S = "${SRCDIR}"
 
@@ -20,6 +22,9 @@ do_compile(){
 
 do_install(){
 	mkdir -p ${D}/lib/modules
+	mkdir -p ${D}${includedir}
 	install -m 0644 ${S}/*.ko ${D}/lib/modules/.
+	install -m 0644 ${S}/*.h ${D}${includedir}/.
 }
+
 
