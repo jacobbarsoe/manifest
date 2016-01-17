@@ -2,6 +2,7 @@ DESCRIPTION = "Linux Kernel"
 HOMEPAGE = "N/A"
 LICENSE = "GPL-2.0"
 
+COMPATIBLE_MACHINES = "rpi"
 
 SRC_URI += "git://github.com/raspberrypi/linux.git;protocol=git;${SRC_REV}"
 RECIPE_USE_kernel_defconfig ?= "bcmrpi_defconfig"
