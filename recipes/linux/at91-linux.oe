@@ -1,0 +1,11 @@
+DESCRIPTION = "linux for at91sam"
+
+require linux-local.inc
+
+COMPATIBLE_MACHINES = ".*at91.*"
+
+RECIPE_FLAGS="linux_at91_src linux_at91_src_dirty"
+DEFAULT_USE_linux_at91_src_dirty="0"
+DEFAULT_USE_linux_at91_src="tag=linux4sam_5.0"
+SRC_REV="${USE_linux_at91_src}"
+SRC_REV:>USE_linux_at91_src_dirty="branch=HEAD;dirty"
