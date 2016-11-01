@@ -1,20 +1,19 @@
-COMPATIBLE_MACHINES = "rpi"
-inherit rootfs image_bom
+inherit rootfs image_bom image_passwd image_fstab image_makedevs
 
 IMAGE_BASENAME = "${MACHINE}-${DISTRO}-rootfs"
 IMAGE_FULLNAME = "${IMAGE_BASENAME}-${DATETIME}"
-DEFAULT_PREFERENCE = "3"
 
-RDEPENDS += "\
+ROOTFS_RDEPENDS = "\
 	base-hostname \
 	base-passwd \
-	kernel-modules \
 	dropbear \
 	netbase \
-	util/e2fsck util/tune2fs util/mke2fs \
-	util/i2cdetect util/i2cdump util/i2cget util/i2cset \
-	ethtool tcpdump \
-	dosfstools-mkfs dosfstools-fsck \
-        ltrace strace util/gdbserver libthread-db \
 	"
 
+RDEPENDS="${ROOTFS_RDEPENDS}"
+#if use flag set override content of rootfs
+RECIPE_FLAGS += "rootfs_rdepends machine_rootfs_rdepends"
+ROOTFS_RDEPENDS:USE_rootfs_rdepends = "${USE_rootfs_rdepends}"
+
+#if machine specific tools are required add them in this use flag
+ROOTFS_RDEPENDS:>USE_machine_rootfs_rdepends = "${USE_rootfs_rdepends}"
