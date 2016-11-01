@@ -1,0 +1,16 @@
+SRC_URI = "file://interfaces"
+SRC_URI += "file://resolv.conf"
+
+do_install() {
+	mkdir -p ${D}${sysconfdir}/network     
+ 	install -m 0644 ${SRCDIR}/resolv.conf ${D}${sysconfdir}/
+	install -m 0644 ${SRCDIR}/interfaces \
+		${D}${sysconfdir}/network/
+}
+
+FILES_netbase-interfaces = "${sysconfdir}/network/interfaces"
+FILES_netbase-resolv-conf = "${sysconfdir}/resolv.conf"
+
+PACKAGES = "netbase-interfaces netbase-resolv-conf"
+
+DEFAULT_PREFERENCE = "10"
