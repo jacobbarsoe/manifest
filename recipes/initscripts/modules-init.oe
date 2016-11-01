@@ -1,0 +1,20 @@
+DESCRIPTON = "Init scripts for rootfs"
+
+RECIPE_FLAGS = "\
+	rootfs_init_rt2870_sysvinit_start \
+"
+
+inherit sysvinit
+
+SYSVINIT_SCRIPT_rootfs_init_rt2870		= "rt2870.sh"
+DEFAULT_USE_rootfs_init_rt2870_sysvinit_start	= "19"
+
+SRC_URI = "\
+	file://rt2870.sh \
+"
+
+do_install () {
+	install -d ${D}${sysconfdir}/init.d
+	install -m 0755 ${SRCDIR}/rt2870.sh ${D}${sysconfdir}/init.d/
+}
+
