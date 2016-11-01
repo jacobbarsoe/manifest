@@ -1,0 +1,27 @@
+DESCRIPTION = "System firmware update image"
+
+inherit dupdate-image
+
+RECIPE_USE_dupdate_archiveformat = "zip"
+
+inherit manifest-version
+addhook manifest_version to post_recipe_parse before set_useflags
+RECIPE_USE_dupdate_version = "${OESTACK_VERSION}"
+
+RDEPENDS = " rootfs"
+
+RECIPE_FLAGS += "fwupdate_bootcmd2 fwupdate_bootcmd3 fwupdate_sda"
+DEFAULT_USE_fwupdate_sda="SDA=sda"
+DEFAULT_USE_fwupdate_bootcmd2="BOOTCMD2='extlinux --once=\"bzImage root=/dev/sda3 rw panic=1\" /tmp/g'"
+DEFAULT_USE_fwupdate_bootcmd3="BOOTCMD3='extlinux --once=\"bzImage root=/dev/sda2 rw panic=1\" /tmp/g'"
+
+SRC_URI += "file://fwupdate.sh"
+RECIPE_USE_dupdate_script = "fwupdate.sh"
+
+do_rstage[postfuncs] =+ "do_rstage_fwupdate"
+do_rstage_fwupdate() {
+        sed  's#^SDA.*#${USE_fwupdate_sda}#' -i ${SRCDIR}/fwupdate.sh 	      
+ 	sed  's#^BOOTCMD2.*#${USE_fwupdate_bootcmd2}#' -i ${SRCDIR}/fwupdate.sh	      	   
+	sed  's#^BOOTCMD3.*#${USE_fwupdate_bootcmd3}#' -i ${SRCDIR}/fwupdate.sh	      
+	install -m 755 ${SRCDIR}/fwupdate.sh ${RSTAGE_DIR}/
+}
