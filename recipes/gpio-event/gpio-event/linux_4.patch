@@ -1,0 +1,63 @@
+--- a/gpio-event-drv.c	2016-01-17 20:37:47.757046989 +0100
++++ b/gpio-event-drv.c	2016-01-17 21:58:36.200947491 +0100
+@@ -60,7 +60,7 @@
+ 
+ /* ---- Private Variables ------------------------------------------------ */
+ 
+-static char gBanner[] __initdata = KERN_INFO "GPIO Event Monitor 0.1 Compiled: " __DATE__ " at " __TIME__ "\n";
++static char gBanner[] __initdata = KERN_INFO "GPIO Event Monitor 0.1";
+ 
+ static  int         gDebugTrace = 0;
+ static  int         gDebugIoctl = 0;
+@@ -351,40 +351,6 @@
+ 
+ /****************************************************************************
+ *
+-*  pins_proc_open
+-*
+-*   Open method for /proc/gpio-event/pin
+-*
+-****************************************************************************/
+-
+-static int pins_proc_open( struct inode *inode, struct file *file )
+-{
+-    DEBUG( Trace, "called\n" );
+-
+-    return seq_open( file, &pin_seq_ops );
+-}
+-
+-/****************************************************************************
+-*
+-*  pin_proc_ops
+-*
+-*   File operations for our /proc/gpio-event/pins file
+-*
+-****************************************************************************/
+-
+-static struct file_operations pins_proc_ops = 
+-{
+-	.owner   = THIS_MODULE,
+-	.open    = pins_proc_open,
+-	.read    = seq_read,
+-	.llseek  = seq_lseek,
+-	.release = seq_release
+-};
+-	
+-
+-
+-/****************************************************************************
+-*
+ *  find_pin
+ *
+ *   Searches the list to see if 'gpio' is currently being monitored.
+@@ -883,8 +849,6 @@
+     ssize_t             bytesToCopy;
+     GPIO_FileData_t    *fileData = file->private_data;
+ 
+-    DEBUG( Trace, "gpio_event_read called, major = %d, minor = %d\n", MAJOR( file->f_dentry->d_inode->i_rdev ), MINOR( file->f_dentry->d_inode->i_rdev ));
+-
+     if ( spaceRemaining == 0 )
+     {
+         return 0;
+
+Diff finished.  Sun Jan 17 21:58:54 2016

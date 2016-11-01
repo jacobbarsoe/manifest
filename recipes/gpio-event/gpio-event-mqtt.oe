@@ -1,0 +1,20 @@
+
+FILESPATHPKG = "gpio-event"
+
+SRC_URI = "file://gpio-event-mqtt.cpp"
+
+inherit c++
+
+S= "${SRCDIR}"
+
+do_compile() {
+  ${CROSS}g++ -o ${PN} gpio-event-mqtt.cpp -lmosquittopp
+}
+
+do_install() {
+  install -d ${D}/${bindir}
+  install -m 0755 ${S}/${PN} ${D}/${bindir}
+}
+
+DEPENDS = "mosquitto-dev gpio-event-dev"
+RDEPENDS_${PN} = "mosquitto gpio-event-modules"

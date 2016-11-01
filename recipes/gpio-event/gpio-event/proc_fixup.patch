@@ -1,0 +1,44 @@
+--- src/gpio-event-drv.c~	2012-06-15 01:23:56.000000000 +0200
++++ src/gpio-event-drv.c	2015-01-04 14:59:25.113205317 +0100
+@@ -196,10 +196,6 @@
+ static  LIST_HEAD( gFileList );
+ static  LIST_HEAD( gPinList );
+ 
+-static struct proc_dir_entry *gProcGpioEvent;
+-static struct proc_dir_entry *gProcPins;
+-
+-
+ /* ---- Private Function Prototypes -------------------------------------- */
+ /* ---- Functions -------------------------------------------------------- */
+ 
+@@ -1103,17 +1099,6 @@
+ 
+     // Register our proc entries.
+ 
+-    gProcGpioEvent = create_proc_entry( "gpio-event", S_IFDIR | S_IRUGO | S_IXUGO, NULL );
+-    if ( gProcGpioEvent == NULL )
+-    {
+-        return -ENOMEM;
+-    }
+-    gProcPins = create_proc_entry( "pins", 0444, gProcGpioEvent );
+-    if ( gProcPins != NULL )
+-    {
+-        gProcPins->proc_fops = &pins_proc_ops;
+-    }
+-
+ #if ( LINUX_VERSION_CODE <= KERNEL_VERSION( 2, 6, 20 ))
+     gSysCtlHeader = register_sysctl_table( gSysCtl, 0 );
+     if ( gSysCtlHeader != NULL )
+@@ -1192,9 +1177,7 @@
+     {
+         unregister_sysctl_table( gSysCtlHeader );
+     }
+-    remove_proc_entry( "pins", gProcGpioEvent );
+-    remove_proc_entry( "gpio-event", NULL );    
+-                                        
++                                      
+     unregister_chrdev_region( gGpioEventDevNum, 1 );
+ 
+ } // gpio_event_exit
+
+Diff finished.  Sun Jan  4 14:59:31 2015
