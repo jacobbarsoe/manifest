@@ -1,0 +1,11 @@
+DESCRIPTION = "u-boot for at91sam"
+
+COMPATIBLE_MACHINES = "at91"
+
+SRC_REV="branch=HEAD;dirty"
+SRC_URI = "git://${TOPDIR}/src/uboot;${SRC_REV};protocol=file"
+S = "${SRCDIR}/uboot"
+
+inherit u-boot
+
+
