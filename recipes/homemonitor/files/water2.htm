@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+     <title>Ramsøvej 16 - Home Monitoring</title>
+     
+     <script type="text/javascript" src="./jquery.min.js"></script>
+     <style type="text/css">
+     ${demo.css}
+     </style>
+	 <script type="text/javascript">
+     $(document).ready(function() {
+	 Highcharts.setOptions({
+	     global: {
+		 useUTC: false
+	     }
+	 });
+	     
+	     vand = new Highcharts.StockChart({
+		     chart: {
+			 renderTo: 'vand',
+			 type: 'column',
+		     },
+		     plotOptions: {
+			 column: {
+			     allowPointSelect: true,
+			 }
+		     },
+		     title: {
+			 text: 'Vand forbrug'
+		     },
+		     rangeSelector: {
+		     	 allButtonsEnabled: true,
+		     	 buttons: [{
+		     	     type: 'day',
+		     	     count: 1,
+		     	     text: '1d'
+		     	 },{
+		     	     type: 'week',
+		     	     count: 1,
+		     	     text: '1w'
+		     	 },{
+		     	     type: 'month',
+		     	     count: 1,
+		     	     text: '1m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 3,
+		     	     text: '3m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 6,
+		     	     text: '6m'
+		     	 }, {
+		     	     type: 'ytd',
+		     	     text: 'YTD'
+		     	 }, {
+		     	     type: 'year',
+		     	     count: 1,
+		     	     text: '1y'
+		     	 }, {
+		     	     type: 'all',
+		     	     text: 'All'
+		     	 }],
+		     	 selected: 0
+		     },
+		     yAxis: {
+			 title: {
+			     text: 'Litres (L)'
+			 },
+		     },
+		     legend: {
+			 enabled: false
+		     },
+		     
+		 series: [{ 
+		     name: 'vand', 
+		     dataGrouping: { 
+			 units: [[
+			     'minute',
+			     [1, 5, 10]
+			 ], [
+			     'hour',
+			     [1, 2, 3, 4, 6, 8, 12]
+			 ], [
+			     'day',
+			     [1]
+			 ], [
+			     'week',
+			     [1]
+			 ], [
+			     'month',
+			     [1, 3, 6]
+			 ]]		     
+		     } }] });
+     	     
+	     el = new Highcharts.StockChart({
+		     chart: {
+			 renderTo: 'el',
+			 type: 'scatter',
+		     },
+		     plotOptions: {
+			 scatter : {
+			     lineWidth: 2,
+			     marker : {
+				 enabled: true,
+				 radius: 2,
+			     },
+			     allowPointSelect: true,
+			     cursor: 'pointer',
+			 },
+
+		     },
+		     title: {
+			 text: 'El forbrug'
+		     },
+		     legend: {
+			 enabled: true
+		     },
+		     rangeSelector: {
+		     	 allButtonsEnabled: true,
+		     	 buttons: [{
+		     	     type: 'day',
+		     	     count: 1,
+		     	     text: '1d'
+		     	 },{
+		     	     type: 'week',
+		     	     count: 1,
+		     	     text: '1w'
+		     	 },{
+		     	     type: 'month',
+		     	     count: 1,
+		     	     text: '1m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 3,
+		     	     text: '3m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 6,
+		     	     text: '6m'
+		     	 }, {
+		     	     type: 'ytd',
+		     	     text: 'YTD'
+		     	 }, {
+		     	     type: 'year',
+		     	     count: 1,
+		     	     text: '1y'
+		     	 }, {
+		     	     type: 'all',
+		     	     text: 'All'
+		     	 }],
+		     	 selected: 0
+		     },
+		     yAxis: {
+			 title: {
+			     text: 'Effekt (W)'
+			 },
+		     },
+		     
+		 series: [{ 
+		     name: 'el', 
+		 } ] });
+
+	     batt = new Highcharts.StockChart({
+		     chart: {
+			 renderTo: 'batt',
+			 type: 'scatter',
+		     },
+		     plotOptions: {
+			 scatter : {
+			     lineWidth: 2,
+			     marker : {
+				 enabled: true,
+				 radius: 2,
+			     },
+			     allowPointSelect: true,
+			     cursor: 'pointer',
+			 },
+
+		     },
+		     title: {
+			 text: 'Batteri niveau'
+		     },
+		     legend: {
+			 enabled: true
+		     },
+		     rangeSelector: {
+		     	 allButtonsEnabled: true,
+		     	 buttons: [{
+		     	     type: 'day',
+		     	     count: 1,
+		     	     text: '1d'
+		     	 },{
+		     	     type: 'week',
+		     	     count: 1,
+		     	     text: '1w'
+		     	 },{
+		     	     type: 'month',
+		     	     count: 1,
+		     	     text: '1m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 3,
+		     	     text: '3m'
+		     	 }, {
+		     	     type: 'month',
+		     	     count: 6,
+		     	     text: '6m'
+		     	 }, {
+		     	     type: 'ytd',
+		     	     text: 'YTD'
+		     	 }, {
+		     	     type: 'year',
+		     	     count: 1,
+		     	     text: '1y'
+		     	 }, {
+		     	     type: 'all',
+		     	     text: 'All'
+		     	 }],
+		     	 selected: 0
+		     },
+		     yAxis: {
+			 title: {
+			     text: 'Spænding (V)'
+			 },
+		     },
+		     
+		 series: [{ 
+		     name: 'el', 
+		     dataGrouping: { 
+			 units: [[
+			     'minute',
+			     [5, 10]
+			 ], [
+			     'hour',
+			     [1, 2, 3, 4, 6, 8, 12]
+			 ], [
+			     'day',
+			     [1]
+			 ], [
+			     'week',
+			     [1]
+			 ], [
+			     'month',
+			     [1, 3, 6]
+			 ]]		     
+		     } } ] });
+     	     
+	 });
+
+
+         $.ajax({
+		 type: "GET",
+	         url: "vand.csv",
+		 dataType: "text",
+		     success: function(data) { setVandData(csvToArray(data));}
+         });
+
+         $.ajax({
+		 type: "GET",
+	         url: "el.csv",
+		 dataType: "text",
+		     success: function(data) { setElData(csvToArray(data));}
+         });
+
+        function setVandData(data){
+	    var totalseconds = data[data.length-1][0] - data[0][0];
+	    var dataArray = new Array(totalseconds);
+	    for(var i=0; i<dataArray.length; i++) 
+		dataArray[i] = [(data[0][0] + i) * 1000, 0]; //convert to millis
+            for(var i=0; i<data.length-1; i++) {
+		var index = data[i][0] - data[0][0];
+		dataArray[index][1] = 1;
+            }
+	    vand.series[0].setData(dataArray);
+	}
+
+        function setElData(data){
+	    var batdata = new Array(data.length);
+	    for(var i=0; i<data.length; i++) {
+		data[i][0] = data[i][0] * 1000; //convert to millis
+		data[i][1] = data[i][4] * 10.52; //convert to W to see instantanous effect
+		batdata[i] = [data[i][0], data[i][5]/872*2.97];
+	    }
+	    el.series[0].setData(data);
+	    batt.series[0].setData(batdata);
+	}
+
+        function csvToArray(csv){
+	    var allTextLines = csv.split(/\r\n|\n/);
+	    var lines = [];
+
+	    for (var i=1; i<allTextLines.length-1; i++) {
+		var data = allTextLines[i].split(',');
+		var line = [];
+		for (var j=0; j<data.length;j++) {
+		    line[j] = parseInt(data[j]);
+                }
+ 		line[0] = line[0];
+		lines.push(line);
+	    }
+            return lines;
+        };
+      </script>
+    </head>
+    <body>
+            <script src="../../js/highstock.js"></script>
+            <script src="../../js/modules/exporting.js"></script>
+   
+	    <div id="vand" style="min-width: 310px; height: 400px;
+	    margin: 0 auto"></div>
+	    <div id="el" style="min-width: 310px; height: 400px; margin: 0
+		      auto"></div>
+	    <div id="batt" style="min-width: 310px; height: 400px; margin: 0
+		      auto"></div>
+
+	    
+    </body>
+</html>

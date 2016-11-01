@@ -1,0 +1,18 @@
+SRC_URI = "file://Highstock-2.0.4.zip"
+SRC_URI += "file://water2.htm"
+SRC_URI += "file://jquery.min.js"
+
+S = "${SRCDIR}"
+
+RDEPENDS_${PN} = "hiawatha"
+
+do_install () {
+ install -d ${D}/var/www
+ cp -a ${S}/* ${D}/var/www/
+ cd ${D}/var/www/
+ ln -s /tmp/vand.csv vand.csv
+ ln -s /tmp/el.csv el.csv
+ mv water2.htm index.html
+}
+
+FILES_${PN} = "/var/www/*"
