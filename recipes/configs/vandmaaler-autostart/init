@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#await ntp date
+while [ -n "$(date | grep 1970)" ]; do sleep 1 ; done
+
+#load gpio-drv
+/sbin/insmod /lib/modules/gpio-event-drv.ko
+sleep 2
+
+#get backup (we are in read-only mode)
+s3-get.sh vand.csv > /tmp/vand.csv
+
+#start monitor
+/usr/bin/gpio-event 18:R:100 -m -e 'VAND_TOTAL=$(cat /tmp/vand.csv |cut -d , -f 2 | tail -n1); let VAND=$VAND_TOTAL+1; echo $(date +%s),$VAND >> /tmp/vand.csv; tail -n1 /tmp/vand.csv; echo' &
+
+#backup every 1hour
+while true; do sleep 3600; cd /tmp/; s3-bash.sh vand.csv; done &
+
+

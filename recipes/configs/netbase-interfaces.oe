@@ -1,0 +1,14 @@
+COMPATIBLE_MACHINES="(rpi)"
+
+SRC_URI = "file://interfaces"
+
+do_install() {
+    install -d ${D}${sysconfdir}/network
+    install -m 644 ${S}/interfaces ${D}${sysconfdir}/network/.
+}
+
+S="${SRCDIR}"
+
+FILES_${PN} = "${sysconfdir}/network/*"
+
+DEFAULT_PREFERENCE = "10"

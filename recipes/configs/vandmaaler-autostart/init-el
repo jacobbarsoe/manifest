@@ -1,0 +1,12 @@
+#!/bin/sh
+
+modprobe spi-bcm2708
+s3-get.sh el.csv > /tmp/el.csv
+
+#start rf gw monitor and log to /tmp/el.csv
+rf-gw &
+
+#backup every 1hour
+while true; do sleep 3500; cd /tmp/; s3-bash.sh el.csv; done &
+
+

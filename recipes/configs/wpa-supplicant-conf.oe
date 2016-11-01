@@ -1,0 +1,12 @@
+COMPATIBLE_MACHINES="rpi"
+
+SRC_URI = "file://wpa_supplicant.conf"
+
+do_install() {
+    install -d ${D}${sysconfdir}
+    install -m 644 ${S}/wpa_supplicant.conf ${D}${sysconfdir}/.
+}
+
+S="${SRCDIR}"
+
+DEFAULT_PREFERENCE = "10"

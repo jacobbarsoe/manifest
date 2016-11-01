@@ -1,0 +1,2 @@
+tmpfs                /var/log             tmpfs      defaults              0  0
+

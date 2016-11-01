@@ -1,0 +1,15 @@
+COMPATIBLE_MACHINES="rpi"
+
+inherit fstab
+
+SRC_URI += """
+file://fstab
+file://dropbear_rsa_host_key
+"""
+
+do_install() {
+	install -d ${D}/var/lib/dropbear
+	install -m 660 ${SRCDIR}/dropbear_rsa_host_key ${D}/var/lib/dropbear/dropbear_rsa_host_key
+}
+
+FILES_${PN} = "/var/lib/dropbear/dropbear_rsa_host_key"

@@ -1,0 +1,18 @@
+
+inherit sysvinit
+SRC_URI += "file://init file://init-el"
+
+RECIPE_FLAGS += "vandmaaler-autostart_sysvinit_start vandmaaler-autostart_sysvinit_stop \
+	     elmaaler-autostart_sysvinit_start elmaaler-autostart_sysvinit_stop"
+SYSVINIT_SCRIPT_vandmaaler-autostart = "HomeMonitor"
+DEFAULT_USE_vandmaaler-autostart_sysvinit_start = "90"
+DEFAULT_USE_vandmaaler-autostart_sysvinit_stop = "0"
+
+SYSVINIT_SCRIPT_elmaaler-autostart = "HomeMonitorEL"
+DEFAULT_USE_elmaaler-autostart_sysvinit_start = "91"
+DEFAULT_USE_elmaaler-autostart_sysvinit_stop = "0"
+
+do_install() {
+ sysvinit_install_script ${SRCDIR}/init HomeMonitor
+ sysvinit_install_script ${SRCDIR}/init-el HomeMonitorEL
+}

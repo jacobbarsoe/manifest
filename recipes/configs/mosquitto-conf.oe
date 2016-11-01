@@ -1,0 +1,12 @@
+COMPATIBLE_MACHINES="rpi"
+
+SRC_URI = "file://mosquitto.conf"
+
+do_install() {
+    install -d ${D}${sysconfdir}/mosquitto
+    install -m 644 ${S}/mosquitto.conf ${D}${sysconfdir}/mosquitto/
+}
+
+S="${SRCDIR}"
+
+DEFAULT_PREFERENCE = "10"
