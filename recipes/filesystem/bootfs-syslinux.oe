@@ -1,0 +1,17 @@
+inherit image
+
+PROVIDES_${PN} = "${PN}"
+
+DEFAULT_PREFERENCE="11"
+
+SRC_URI="file://syslinux.cfg"
+
+do_rstage[postfuncs] = "do_rstage_syslinux"
+do_rstage_syslinux() {
+  install ${SRCDIR}/syslinux.cfg ${RSTAGE_DIR}/syslinux.cfg		    
+}
+
+RDEPENDS = "\
+	 kernel \
+	 "
+

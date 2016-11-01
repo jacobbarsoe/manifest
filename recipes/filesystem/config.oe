@@ -1,0 +1,55 @@
+COMPATIBLE_MACHINES = "(via)"
+
+inherit passwd fstab makedevs
+SRC_URI += "file://passwd"
+SRC_URI += "file://group"
+SRC_URI += "file://fstab"
+SRC_URI += "file://htpasswd"
+SRC_URI += "file://printers.conf"
+SRC_URI += "file://ushare.conf"
+SRC_URI += "file://hiawatha.conf"
+SRC_URI += "file://smb.conf"
+SRC_URI += "file://sshd_config"
+SRC_URI += "file://permissions.conf"
+SRC_URI += "file://ssh_host_rsa_key"
+SRC_URI += "file://ssh_host_dsa_key"
+SRC_URI += "file://ssh_host_dsa_key.pub"
+SRC_URI += "file://ssh_host_rsa_key.pub"
+SRC_URI += "file://tmp.sh"
+
+MAKEDEVS_FILES="${SRCDIR}/permissions.conf"
+
+do_install() {
+  mkdir -p ${D}/app
+  mkdir -p ${D}/etc					    
+  mkdir -p ${D}/mnt/hdd1		
+  mkdir -p ${D}/home/jabk		
+  mkdir -p ${D}/home/annette
+  install -m 0644 ${SRCDIR}/htpasswd ${D}${sysconfdir}/htpasswd
+  install -m 0644 ${SRCDIR}/fstab ${D}${sysconfdir}/fstab
+  mkdir -p ${D}/etc/cups/
+  install -m0644 ${SRCDIR}/printers.conf ${D}${sysconfdir}/cups/printers.conf
+  install -m0644 ${SRCDIR}/ushare.conf ${D}${sysconfdir}/ushare.conf
+  install -m0644 ${SRCDIR}/hiawatha.conf ${D}${sysconfdir}/hiawatha.conf
+  mkdir -p ${D}/etc/samba/
+  install -m0644 ${SRCDIR}/smb.conf ${D}${sysconfdir}/samba/smb.conf
+  mkdir -p ${D}/etc/ssh/
+  install -m0644 ${SRCDIR}/sshd_config ${D}${sysconfdir}/ssh/sshd_config
+  install -m0600 ${SRCDIR}/ssh_host_dsa_key ${D}${sysconfdir}/ssh/
+  install -m0600 ${SRCDIR}/ssh_host_rsa_key ${D}${sysconfdir}/ssh/
+  install -m0644 ${SRCDIR}/ssh_host_dsa_key.pub ${D}${sysconfdir}/ssh/
+  install -m0644 ${SRCDIR}/ssh_host_rsa_key.pub ${D}${sysconfdir}/ssh/
+  install -m0770 ${SRCDIR}/tmp.sh ${D}${bindir}/jacob_backup.sh
+}
+
+FILES_${PN} = "/*"
+
+PACKAGES += "cups-printers-conf ushare-conf hiawatha-conf smb-conf openssh-sshd-conf"
+FILES_cups-printers-conf = "/etc/cups/printers.conf"
+FILES_ushare-conf = "/etc/ushare.conf"
+FILES_hiawatha-conf = "/etc/hiawatha.conf"
+FILES_samba-conf = "/etc/samba/smb.conf"
+FILES_openssh-sshd-conf = "/etc/ssh/*"
+
+
+DEFAULT_PREFERENCE = "10"

@@ -1,0 +1,15 @@
+COMPATIBLE_MACHINES = "(rpi)"
+
+SRC_URI += "file://hiawatha.conf_rpi"
+
+do_install() {
+  mkdir -p ${D}/etc					    
+  install -m0644 ${SRCDIR}/hiawatha.conf_rpi ${D}${sysconfdir}/hiawatha.conf
+}
+
+FILES_${PN} = "/*"
+
+PACKAGES =+ "hiawatha-conf"
+FILES_hiawatha-conf = "/etc/hiawatha.conf"
+
+DEFAULT_PREFERENCE = "10"

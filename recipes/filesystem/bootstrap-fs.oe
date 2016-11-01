@@ -1,0 +1,26 @@
+#this bootstrap fs is used for syslinux based systems.  boot on a USB
+#stick and use e2fsprogs to manually create the given partition layout.
+#manually call syslinux to install boot partition is needed as well.
+
+inherit rootfs
+
+PROVIDES_${PN} = "${PN}"
+
+#images to bootstrap
+RDEPENDS = " \
+    bootfs \
+    rootfs \
+    "
+
+#helper rootfs
+RDEPENDS += "\
+    base-hostname \
+    base-passwd \
+    netbase \
+    config \
+    openssh \
+    util/sfdisk \
+    e2fsprogs\
+    syslinux-extlinux syslinux-mbr"
+
+

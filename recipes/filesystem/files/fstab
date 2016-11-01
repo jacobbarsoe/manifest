@@ -1,0 +1,10 @@
+/dev/sdb1                                 /mnt/hdd1  ext3	defaults 0 0
+/dev/sda4                                 /app       ext4	defaults 0 0
+/dev/sda1                                 /boot      ext2	defaults 0 0
+tmpfs 					  /var/log   tmpfs     	rw 	 0 0
+tmpfs 					  /var/spool tmpfs 	rw 	 0 0
+tmpfs 					  /var/run   tmpfs 	rw 	 0 0
+tmpfs 					  /var/pid   tmpfs 	rw 	 0 0
+tmpfs 					  /var/cache tmpfs 	rw 	 0 0
+
+
