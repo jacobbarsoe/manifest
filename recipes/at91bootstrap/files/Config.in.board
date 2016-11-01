@@ -1,0 +1,10 @@
+config	CONFIG_AT91SAM9RLEK
+	bool "at91sam9rlek"
+	select AT91SAM9RL
+	select ALLOW_SDCARD
+	select CONFIG_SDRAM
+	select ALLOW_CPU_CLK_200MHZ
+	select ALLOW_CRYSTAL_12_000MHZ
+	select SUPPORT_BUS_SPEED_100MHZ
+	help
+	    Use the AT91SAM9RLEK Development board

@@ -1,0 +1,36 @@
+DESCRIPTION = "2nd stage bootloader for at91"
+
+inherit make c 
+
+SRC_REV="tag=v3.8.1"
+#SRC_URI = "git://github.com/linux4sam/at91bootstrap.git;${SRC_REV};protocol=git"
+SRC_URI = "git://${TOPDIR}/src/at91bootstrap;branch=HEAD;dirty;protocol=file"
+S = "${SRCDIR}/at91bootstrap"
+
+RECIPE_FLAGS = "at91bootstrap_config"
+DEFAULT_USE_at91bootstrap_config = "at91sam9rleksd_uboot_defconfig"
+
+OEMAKE_CONFIG = "${USE_at91bootstrap_config}"
+
+export CROSS_COMPILE="${HOST_PREFIX}"
+export LDFLAGS = ""
+
+do_configure() {
+	${MAKE} mrproper       
+	${MAKE} $PARALLEL_MAKE ${OEMAKE_CONFIG} 
+}
+
+do_install(){
+  install ${S}/binaries/at91bootstrap.bin ${D}
+}
+
+addtask deploy before build after compile
+do_deploy[dirs] = "${IMAGE_DEPLOY_DIR} ${D}"
+
+do_deploy(){
+  install -m 0644 ${D}/at91bootstrap.bin ${IMAGE_DEPLOY_DIR}/
+}
+
+
+FILES_${PN} += "/*"
+
