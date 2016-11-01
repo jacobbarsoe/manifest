@@ -1,0 +1,20 @@
+SRC_URI = "file://rf-gw.cpp"
+
+inherit c++
+
+S = "${SRCDIR}"
+
+do_compile() {
+  ${CXX} rf-gw.cpp -o rf-gw -lrf24-bcm  -lpthread
+}
+#-lsqlite3
+do_install() {
+  install -d ${D}/${bindir}
+  install -m 755 ${S}/rf-gw ${D}/${bindir}
+}
+
+DEPENDS = "rf24-dev libpthread"
+RDEPENDS_${PN} = "rf24 libpthread"
+#DEPENDS = "rf24-dev libsqlite3 libpthread"
+#RDEPENDS_${PN} = "rf24 libsqlite3 util/sqlite3"
+

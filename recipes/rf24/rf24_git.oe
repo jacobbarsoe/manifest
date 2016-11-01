@@ -1,0 +1,27 @@
+SRC_URI = "git://github.com/TMRh20/RF24.git;protocol=https;commit=4d5f014c0efabe2d638b928eb95b07894531b569"
+
+S = "${SRCDIR}/RF24"
+
+inherit make c++
+
+RDEPENDS_${PN} = "libstdc++"
+
+do_unpack[postfuncs] += "do_unpack_fixup"
+
+do_unpack_fixup() {
+  sed 's#^PREFIX.*#PREFIX=${D}/usr#' -i ${S}/Makefile
+  sed 's#g++#${CROSS}g++#' -i ${S}/Makefile
+  sed 's#gcc#${CROSS}gcc#' -i ${S}/Makefile
+  sed '/^CCFLAGS/D' -i ${S}/Makefile
+  sed '/ldconfig/D' -i ${S}/Makefile
+}
+
+do_install[postfuncs] += "do_install_fixup_symlink"
+do_install_fixup_symlink() {
+  cd ${D}${libdir}
+  ln -sf librf24-bcm.so.1.0 librf24-bcm.so.1 
+  ln -sf librf24-bcm.so.1.0 librf24-bcm.so
+}
+
+FILES_${PN} += "${libdir}"
+DEPENDS_${PN}-dev = "${PN}"
