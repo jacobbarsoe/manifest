@@ -1,0 +1,18 @@
+SUMMARY = "USB RALINK chipsets firmware"
+
+RECIPE_FLAGS = "ralink_chipset"
+
+#options are "rt2561 rt2561s rt2661 rt2860 rt2870 rt3070 rt3071 rt3090 rt73"
+DEFAULT_USE_ralink_chipset = "rt2870.bin"
+
+FIRMWARE="${USE_ralink_chipset}"
+
+SRC_URI = "file://${FIRMWARE}" 
+	   
+do_install(){
+	mkdir -p ${D}/lib/firmware
+	install -m 0644 ${SRCDIR}/${FIRMWARE} ${D}/lib/firmware/.
+}
+
+FILES_${PN} += "/lib/firmware/*"
+
