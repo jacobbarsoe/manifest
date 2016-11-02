@@ -1,5 +1,0 @@
-inherit kernel
-require ${PN}.inc
-require ${PN}-branch.inc
-
-
