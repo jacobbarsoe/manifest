@@ -12,7 +12,7 @@
 	branch = master
 [submodule "lib/urlgrabber"]
 	path = lib/urlgrabber
-	url = git://oe-lite.org/urlgrabber.git
+	url = git@github.com:oe-lite/urlgrabber.git
 	branch = master
 [submodule "meta/qt"]
 	path = meta/qt
